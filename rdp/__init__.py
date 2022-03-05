@@ -43,9 +43,41 @@ except ImportError:
 
 if sys.version_info[0] >= 3:
     xrange = range
-
+    
 
 def pldist(point, start, end):
+    """
+    Calculates the distance from ``point`` to the line given
+    by the points ``start`` and ``end``.
+
+    :param point: a point
+    :type point: numpy array
+    :param start: a point of the line
+    :type start: numpy array
+    :param end: another point of the line
+    :type end: numpy array
+    """
+    if np.all(start == end)):
+        return np.linalg.norm(point - start)
+
+    # normalized tangent vector
+    d = np.divide(end - start, np.linalg.norm(end - start))
+
+    # signed parallel distance components
+    s = np.dot(start - point, d)
+    t = np.dot(point - end, d)
+
+    # clamped parallel distance
+    h = np.max([s, t, 0])
+
+    # perpendicular distance component, as before
+    c = np.cross(point - start, d)
+
+    # use hypot for Pythagoras to improve accuracy
+    return np.hypot(h, c)
+
+
+def _pldist(point, start, end):
     """
     Calculates the distance from ``point`` to the line given
     by the points ``start`` and ``end``.
