@@ -129,8 +129,8 @@ def dist_to_segment(pt, v1, v2, dist=dist_cart):
         return dist(pt, vm)
 
     # not needed with approximation
-    # if (lls == 0):
-    #    return dist_m(pt, v1)
+    if (lls == 0):
+        return dist_m(pt, v1)
 
     t = np.dot((pt - v1), (v2 - v1))/lls
     if t <= 0:
